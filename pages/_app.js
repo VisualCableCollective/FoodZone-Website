@@ -1,8 +1,10 @@
-import '../styles/globals.css'
 import {useEffect} from "react";
 import Geocode from "react-geocode";
 import {GOOGLE_MAPS_API_KEY} from "../config";
 import {ToastContainer} from "react-toastify";
+
+import '../styles/globals.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 function MyApp({ Component, pageProps }) {
 
