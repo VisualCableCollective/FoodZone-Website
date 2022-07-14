@@ -5,10 +5,16 @@ import {useGeolocated} from "react-geolocated";
 import Geocode from "react-geocode";
 import { toast } from 'react-toastify';
 import { LoadingButton } from '@mui/lab';
+import {useAppDispatch, useAppSelector} from "../../app/hooks";
+import {selectAddress, setAddress} from "./addressSlice";
 
 export const AddressInput = () => {
+    const dispatch = useAppDispatch();
+    const address = useAppSelector(selectAddress);
+
     const [isLocateBtnDisabled, setIsLocateBtnDisabled] = useState(false);
     const [locateBtnTooltipText, setLocateBtnTooltipText] = useState("Locate");
+    const [addressFieldValue, setAddressFieldValue] = useState("");
 
     const { coords, isGeolocationAvailable, isGeolocationEnabled } =
         useGeolocated({
@@ -54,11 +60,20 @@ export const AddressInput = () => {
         );
     }
 
+    function onManualAddressSubmit(e) {
+        e.preventDefault();
+
+        console.log(addressFieldValue);
+    }
+
     return (
         <Grid container direction="row" justifyContent="center" mt={2}
               alignItems="center">
             <Grid item xs={4}>
-                <TextField label="Address" size="small" fullWidth/>
+                <form onSubmit={onManualAddressSubmit}>
+                    <TextField name="address" label="Address" size="small" fullWidth
+                               value={addressFieldValue} onChange={(e) => setAddressFieldValue(e.target.value)}/>
+                </form>
             </Grid>
             <Grid item xs="auto" justifyContent="center" ml={2}>
                 <Tooltip title={locateBtnTooltipText} arrow TransitionComponent={Zoom}>

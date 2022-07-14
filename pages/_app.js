@@ -2,6 +2,8 @@ import {useEffect} from "react";
 import Geocode from "react-geocode";
 import {GOOGLE_MAPS_API_KEY} from "../config";
 import {ToastContainer} from "react-toastify";
+import store from '../app/store';
+import { Provider } from 'react-redux';
 
 import '../styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,7 +19,7 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
-      <>
+      <Provider store={store}>
         <Component {...pageProps} />
         <ToastContainer
             position="bottom-right"
@@ -30,7 +32,7 @@ function MyApp({ Component, pageProps }) {
             draggable
             pauseOnHover
         />
-      </>
+      </Provider>
   )
 }
 
