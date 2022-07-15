@@ -8,7 +8,7 @@ import { LoadingButton } from '@mui/lab';
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {selectAddress, setAddress} from "./addressSlice";
 
-export const AddressInput = () => {
+export const AddressInput = ({onAddressSubmit}) => {
     const dispatch = useAppDispatch();
     const address = useAppSelector(selectAddress);
 
@@ -63,7 +63,9 @@ export const AddressInput = () => {
     function onManualAddressSubmit(e) {
         e.preventDefault();
 
-        console.log(addressFieldValue);
+        dispatch(setAddress(addressFieldValue));
+
+        onAddressSubmit(addressFieldValue);
     }
 
     return (
