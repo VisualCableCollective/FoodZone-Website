@@ -18,7 +18,7 @@ import Link from "next/link";
 const pages = [
     {
         title: "Order",
-        href: "order"
+        href: "/order"
     }
 ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
