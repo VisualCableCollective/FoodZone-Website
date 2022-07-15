@@ -7,6 +7,9 @@ import { Provider } from 'react-redux';
 
 import '../styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
+import {CssBaseline, ThemeProvider} from "@mui/material";
+
+import theme from "../theme";
 
 function MyApp({ Component, pageProps }) {
 
@@ -20,18 +23,21 @@ function MyApp({ Component, pageProps }) {
 
   return (
       <Provider store={store}>
-        <Component {...pageProps} />
-        <ToastContainer
-            position="bottom-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-        />
+          <ThemeProvider theme={theme} >
+              <CssBaseline />
+              <Component {...pageProps} />
+              <ToastContainer
+                  position="bottom-right"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+              />
+          </ThemeProvider>
       </Provider>
   )
 }
