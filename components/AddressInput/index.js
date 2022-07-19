@@ -10,7 +10,6 @@ import {selectAddress, setAddress} from "./addressSlice";
 
 export const AddressInput = ({onAddressSubmit}) => {
     const dispatch = useAppDispatch();
-    const address = useAppSelector(selectAddress);
 
     const [isLocateBtnDisabled, setIsLocateBtnDisabled] = useState(false);
     const [locateBtnTooltipText, setLocateBtnTooltipText] = useState("Locate");

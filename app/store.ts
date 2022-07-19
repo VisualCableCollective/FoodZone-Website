@@ -1,11 +1,13 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import addressReducer from "../components/AddressInput/addressSlice";
+import orderReducer from "../components/Order/orderTypeSlice";
 
 
 export function makeStore() {
     return configureStore({
         reducer: {
-            address: addressReducer
+            address: addressReducer,
+            orderType: orderReducer
         },
     })
 }

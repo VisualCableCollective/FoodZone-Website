@@ -5,10 +5,21 @@ import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import {OrderTypeSelectBox} from "../../components/Order/OrderTypeSelectBox";
+import {OrderType} from "../../models/OrderType";
+import {useAppDispatch, useAppSelector} from "../../app/hooks";
+import {setOrderType} from "../../components/Order/orderTypeSlice";
+import {useRouter} from "next/router";
+import {selectAddress} from "../../components/AddressInput/addressSlice";
 
 export default function SelectOrderTypePage() {
+    const dispatch = useAppDispatch();
+    const router = useRouter();
+
+    const address = useAppSelector(selectAddress);
+
     function onItemClick(orderType) {
-        console.log(orderType);
+        dispatch(setOrderType(orderType));
+        router.push("/delivery-services/" + encodeURI(address));
     }
 
     return (
@@ -20,15 +31,15 @@ export default function SelectOrderTypePage() {
                 <Grid container pt={6} columns={3} spacing={2}>
                     <Grid item xs={1}>
                         <OrderTypeSelectBox title="Have it delivered" iconType={DeliveryDiningIcon}
-                                               onClick={() => onItemClick("deliver")}/>
+                                               onClick={() => onItemClick(OrderType.Delivery)}/>
                     </Grid>
                     <Grid item xs={1}>
                         <OrderTypeSelectBox title="Pick it up yourself" iconType={FmdGoodIcon}
-                                               onClick={() => onItemClick("pickup")}/>
+                                               onClick={() => onItemClick(OrderType.PickUp)}/>
                     </Grid>
                     <Grid item xs={1}>
                         <OrderTypeSelectBox title="Eat in the restaurant" iconType={RestaurantIcon}
-                                               onClick={() => onItemClick("order")}/>
+                                               onClick={() => onItemClick(OrderType.Restaurant)}/>
                     </Grid>
                 </Grid>
             </Container>
