@@ -94,7 +94,7 @@ export const Navbar = () => {
                             }}
                         >
                             {pages.map((page) => (
-                                <Link href={page.href} passHref>
+                                <Link key={page.title} href={page.href} passHref>
                                     <MenuItem key={page.href} onClick={handleCloseNavMenu}>
                                         <Typography textAlign="center">{page.title}</Typography>
                                     </MenuItem>
@@ -123,7 +123,7 @@ export const Navbar = () => {
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
-                            <Link href={page.href} passHref>
+                            <Link key={page.title} href={page.href} passHref>
                                 <Button key={page.href}
                                         onClick={handleCloseNavMenu}
                                         sx={{ my: 2, color: 'white', display: 'block' }}
@@ -137,7 +137,7 @@ export const Navbar = () => {
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                <Avatar alt="Remy Sharp" />
                             </IconButton>
                         </Tooltip>
                         <Menu
