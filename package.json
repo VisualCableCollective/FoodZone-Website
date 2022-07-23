@@ -16,6 +16,7 @@
     "@mui/lab": "^5.0.0-alpha.89",
     "@mui/material": "^5.8.6",
     "@reduxjs/toolkit": "^1.8.3",
+    "foodzone-api-client": "file:../FoodZone-API-Client",
     "next": "^12.2.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",

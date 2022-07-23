@@ -10,10 +10,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import {CssBaseline, ThemeProvider} from "@mui/material";
 
 import theme from "../theme";
+import {useFoodZone} from "foodzone-api-client";
 
 function MyApp({ Component, pageProps }) {
+    const foodZone = useFoodZone();
 
   useEffect(() => {
+      foodZone.Config.setEnvironment("development");
+
     // Google Geocode setup
     Geocode.setApiKey(GOOGLE_MAPS_API_KEY);
     Geocode.setLanguage("de");

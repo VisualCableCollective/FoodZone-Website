@@ -3,13 +3,25 @@ import {useRouter} from "next/router";
 import {Box, Card, CardContent, CardMedia, Container, IconButton, Typography} from "@mui/material";
 import {useAppSelector} from "../../app/hooks";
 import {selectOrderType} from "../../components/Order/orderTypeSlice";
+import {useEffect, useState} from "react";
+import {useFoodZone, GetLocationsByAddressResponse} from "foodzone-api-client";
 
 export default function DeliveryServicesListPage() {
     const router = useRouter();
+    const foodZone = useFoodZone();
 
     const orderType = useAppSelector(selectOrderType);
 
     const urlAddress = router.query.address;
+
+    const [data, setData] = useState<GetLocationsByAddressResponse>();
+
+    useEffect(() => {
+        console.log(foodZone)
+        foodZone.getLocationsByAddress(urlAddress as string).then(response => {
+            setData(response);
+        });
+    }, []);
 
     return (
         <MainLayout>
