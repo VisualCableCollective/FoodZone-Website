@@ -792,6 +792,11 @@ aria-query@^4.2.2:
     "@babel/runtime" "^7.10.2"
     "@babel/runtime-corejs3" "^7.10.2"
 
+array-back@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/array-back/-/array-back-5.0.0.tgz#e196609edcec48376236d163958df76e659a0d36"
+  integrity sha512-kgVWwJReZWmVuWOQKEOohXKJX+nD02JAZ54D1RRWlv8L0NebauKAaFxACKzB74RTclt1+WNz5KHaLRDAPZbDEw==
+
 array-includes@^3.1.4, array-includes@^3.1.5:
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/array-includes/-/array-includes-3.1.5.tgz#2c320010db8d31031fd2a5f6b3bbd4b1aad31bdb"
@@ -1429,7 +1434,7 @@ flatted@^3.1.0:
   integrity sha512-0sQoMh9s0BYsm+12Huy/rkKxVu4R1+r96YX5cG44rHV0pQ6iC3Q+mkoMFaGWObMFYQxCVT+ssG1ksneA2MI9KQ==
 
 "foodzone-api-client@file:../FoodZone-API-Client":
-  version "1.0.2"
+  version "1.0.4"
   dependencies:
     cross-fetch "^3.1.5"
 
@@ -1467,6 +1472,11 @@ gensync@^1.0.0-beta.2:
   version "1.0.0-beta.2"
   resolved "https://registry.yarnpkg.com/gensync/-/gensync-1.0.0-beta.2.tgz#32a6ee76c3d7f52d46b2b1ae5d93fea8580a25e0"
   integrity sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==
+
+geolib@^3.3.3:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/geolib/-/geolib-3.3.3.tgz#17f5a0dcdc0b051bd631b66f7131d2c14c54a15b"
+  integrity sha512-YO704pzdB/8QQekQuDmFD5uv5RAwAf4rOUPdcMhdEOz+HoPWD0sC7Qqdwb+LAvwIjXVRawx0QgZlocKYh8PFOQ==
 
 get-intrinsic@^1.0.2, get-intrinsic@^1.1.0, get-intrinsic@^1.1.1:
   version "1.1.2"
@@ -2354,6 +2364,14 @@ slash@^3.0.0:
   resolved "https://registry.yarnpkg.com/slash/-/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
   integrity sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
 
+sort-array@^4.1.5:
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/sort-array/-/sort-array-4.1.5.tgz#64b92aaba222aec606786f4df28ae4e3e3e68313"
+  integrity sha512-Ya4peoS1fgFN42RN1REk2FgdNOeLIEMKFGJvs7VTP3OklF8+kl2SkpVliZ4tk/PurWsrWRsdNdU+tgyOBkB9sA==
+  dependencies:
+    array-back "^5.0.0"
+    typical "^6.0.1"
+
 source-map-js@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.0.2.tgz#adbc361d9c62df380125e7f161f71c826f1e490c"
@@ -2507,6 +2525,11 @@ typescript@^4.7.4:
   version "4.7.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.7.4.tgz#1a88596d1cf47d59507a1bcdfb5b9dfe4d488235"
   integrity sha512-C0WQT0gezHuw6AdY1M2jxUO83Rjf0HP7Sk1DtXj6j1EwkQNZrHAg2XPWlq62oqEhYvONq5pkC2Y9oPljWToLmQ==
+
+typical@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/typical/-/typical-6.0.1.tgz#89bd1a6aa5e5e96fa907fb6b7579223bff558a06"
+  integrity sha512-+g3NEp7fJLe9DPa1TArHm9QAA7YciZmWnfAqEaFrBihQ7epOv9i99rjtgb6Iz0wh3WuQDjsCTDfgRoGnmHN81A==
 
 unbox-primitive@^1.0.2:
   version "1.0.2"
