@@ -9,9 +9,9 @@ export default function LocationMenuPage() {
       <Container>
         <Box pt={4}>
           <Grid container columns={3} spacing={1}>
-            <MenuCategory name="Burger" />
-            <MenuCategory name="Pizza" />
-            <MenuCategory name="Pasta" />
+            <MenuCategory name="Burger" image={"/img/food-2.jpg"} />
+            <MenuCategory name="Pizza" image={"/img/food-2.jpg"} />
+            <MenuCategory name="Pasta" image={"/img/food-2.jpg"} />
           </Grid>
         </Box>
       </Container>
@@ -19,14 +19,14 @@ export default function LocationMenuPage() {
   )
 }
 
-function MenuCategory({name}) {
+function MenuCategory({name, image}) {
   return (
     <Grid item xs={1}>
       <Card variant="outlined" sx={{position: "relative"}}>
         <CardMedia
           component="div"
           sx={{ height: 200 }}
-          image="/img/food-2.jpg"
+          image={image}
         />
         <Box sx={{background: "rgba(0,0,0,0.0)",
           position: "absolute", top: 0, right: 0, zIndex: 10, width: "100%", height: 200, display: "flex", alignItems: "end",

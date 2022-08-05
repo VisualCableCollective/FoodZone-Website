@@ -15,15 +15,9 @@ import AdbIcon from '@mui/icons-material/Adb';
 import {LocalPizza} from "@mui/icons-material";
 import Link from "next/link";
 
-const pages = [
-    {
-        title: "Order",
-        href: "/order"
-    }
-];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-export const Navbar = () => {
+export const Navbar = ({pages}) => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
