@@ -21,6 +21,8 @@ function MyApp({ Component, pageProps }) {
     Geocode.setLanguage("de");
     Geocode.setRegion("de");
     Geocode.setLocationType("ROOFTOP");
+
+    FoodZone.init();
   }, []);
 
   return (
