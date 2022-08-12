@@ -2,21 +2,25 @@ import {SellerLayout} from "../../../layouts/SellerLayout";
 import {DataGrid, GridRenderCellParams} from '@mui/x-data-grid';
 import {
   Box,
-  Container,
-  IconButton,
   Button,
-  Modal,
+  Container,
   Dialog,
-  DialogTitle,
+  DialogActions,
   DialogContent,
-  DialogContentText, TextField, DialogActions, Stack
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  Stack,
+  TextField
 } from "@mui/material";
+import LinearProgress from '@mui/material/LinearProgress';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import {useCallback, useState} from "react";
-import {Dropzone, FileItem, FileValidated} from "@dropzone-ui/react";
+import {useEffect, useState} from "react";
+import {Dropzone, FileItem, FileValidated, UPLOADSTATUS} from "@dropzone-ui/react";
 import {useFoodZone} from "foodzone-api-client";
+import {ProductCategory} from "foodzone-api-client/lib/models/ProductCategory";
 
 const columns = [
   { field: 'name', headerName: 'Name' },
@@ -38,21 +42,51 @@ const columns = [
     ),},
 ];
 
-const rows = [
-  { id: 123, name: 'Burger', productsCount: 2, updatedAt: 'Yesterday' },
-];
-
 export default function SellerCmsCategoriesPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [files, setFiles] = useState<FileValidated[]>([]);
+  const [uploadProgess, setUploadProgress] = useState(0);
+  const [data, setData] = useState<ProductCategory[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const updateFiles = (incommingFiles) => {
     setFiles(incommingFiles);
   };
   const foodZone = useFoodZone();
 
+  useEffect(() => {
+    foodZone.getCategories().then(res => {
+      console.log(res);
+      setData(res.categories);
+    });
+  }, []);
+
   function onFormSubmit(e) {
     e.preventDefault();
-    foodZone.createProductCategory("test", files[0].file);
+
+    setIsLoading(true);
+    let file = files[0];
+    file.uploadStatus = UPLOADSTATUS.uploading;
+    setFiles([file]);
+
+    foodZone.createProductCategory("test", files[0].file, {onProgress: onSubmitProgressUpdate})
+      .then(res => {
+        setIsLoading(false);
+        setUploadProgress(0);
+        setIsAddModalOpen(false);
+        setFiles([]);
+      })
+      .catch(reason => {
+        setIsLoading(false);
+      });
+  }
+
+  function onSubmitProgressUpdate(progress: number) {
+    setUploadProgress(progress);
+  }
+
+  function closeModal() {
+    if (isLoading) return;
+    setIsAddModalOpen(false);
   }
 
   return (
@@ -66,7 +100,7 @@ export default function SellerCmsCategoriesPage() {
           </Box>
           <div style={{ height: 400, width: '100%' }}>
             <DataGrid
-              rows={rows}
+              rows={data}
               columns={columns}
               pageSize={5}
               rowsPerPageOptions={[5]}
@@ -74,7 +108,8 @@ export default function SellerCmsCategoriesPage() {
             />
           </div>
         </Box>
-        <Dialog open={isAddModalOpen} onClose={() => setIsAddModalOpen(false)}>
+        <Dialog open={isAddModalOpen} onClose={closeModal}>
+          {isLoading && <LinearProgress variant="determinate" value={uploadProgess} />}
           <DialogTitle>Add new category</DialogTitle>
           <form onSubmit={onFormSubmit}>
             <DialogContent>
@@ -88,6 +123,7 @@ export default function SellerCmsCategoriesPage() {
                   label="Name"
                   fullWidth
                   size="small"
+                  disabled={isLoading}
                 />
                 <Dropzone onChange={updateFiles} value={files} accept="image/*" maxFiles={1} minHeight={"100px"} behaviour="replace"
                           label={"Drop Files here or click to browse"}>
@@ -98,8 +134,8 @@ export default function SellerCmsCategoriesPage() {
               </Stack>
             </DialogContent>
             <DialogActions>
-              <Button onClick={() => setIsAddModalOpen(false)}>Cancel</Button>
-              <Button type="submit">Create</Button>
+              <Button onClick={closeModal} disabled={isLoading}>Cancel</Button>
+              <Button type="submit" disabled={isLoading}>Create</Button>
             </DialogActions>
           </form>
         </Dialog>

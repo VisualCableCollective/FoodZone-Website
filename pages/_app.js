@@ -23,6 +23,7 @@ function MyApp({ Component, pageProps }) {
     Geocode.setLocationType("ROOFTOP");
 
     FoodZone.init();
+    FoodZone.actAsUser(1);
   }, []);
 
   return (
