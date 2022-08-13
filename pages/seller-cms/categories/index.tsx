@@ -21,6 +21,8 @@ import {useEffect, useState} from "react";
 import {Dropzone, FileItem, FileValidated, UPLOADSTATUS} from "@dropzone-ui/react";
 import {useFoodZone} from "foodzone-api-client";
 import {ProductCategory} from "foodzone-api-client/lib/models/ProductCategory";
+import {useAppSelector} from "../../../app/hooks";
+import {selectIsAuthenticated} from "../../../features/FoodZoneApi/foodZoneSlice";
 
 const columns = [
   { field: 'name', headerName: 'Name' },
@@ -52,13 +54,16 @@ export default function SellerCmsCategoriesPage() {
     setFiles(incommingFiles);
   };
   const foodZone = useFoodZone();
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
   useEffect(() => {
+    if (!isAuthenticated) return;
+
     foodZone.getCategories().then(res => {
       console.log(res);
       setData(res.categories);
     });
-  }, []);
+  }, [isAuthenticated]);
 
   function onFormSubmit(e) {
     e.preventDefault();

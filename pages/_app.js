@@ -11,6 +11,8 @@ import {CssBaseline, ThemeProvider} from "@mui/material";
 
 import theme from "../theme";
 import {FoodZone} from "foodzone-api-client";
+import {useAppDispatch} from "../app/hooks";
+import {setIsAuthenticated} from "../features/FoodZoneApi/foodZoneSlice";
 
 FoodZone.Config.setEnvironment("development");
 
@@ -21,16 +23,15 @@ function MyApp({ Component, pageProps }) {
     Geocode.setLanguage("de");
     Geocode.setRegion("de");
     Geocode.setLocationType("ROOFTOP");
-
-    FoodZone.init();
-    FoodZone.actAsUser(1);
   }, []);
 
   return (
       <Provider store={store}>
           <ThemeProvider theme={theme} >
               <CssBaseline />
-              <Component {...pageProps} />
+              <SubWrapper>
+                  <Component {...pageProps} />
+              </SubWrapper>
               <ToastContainer
                   position="bottom-right"
                   autoClose={5000}
@@ -45,6 +46,21 @@ function MyApp({ Component, pageProps }) {
           </ThemeProvider>
       </Provider>
   )
+}
+
+function SubWrapper(props) {
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        FoodZone.init().then(res => {
+            if (!res) return;
+            FoodZone.actAsUser(1).then(res => {
+                dispatch(setIsAuthenticated(true));
+            })
+        });
+    }, []);
+
+    return props.children;
 }
 
 export default MyApp
