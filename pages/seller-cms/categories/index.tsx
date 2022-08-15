@@ -110,6 +110,7 @@ export default function SellerCmsCategoriesPage() {
               pageSize={5}
               rowsPerPageOptions={[5]}
               checkboxSelection
+              disableSelectionOnClick
             />
           </div>
         </Box>
