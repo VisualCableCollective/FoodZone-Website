@@ -18,80 +18,82 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import {useEffect, useState} from "react";
-import {Dropzone, FileItem, FileValidated, UPLOADSTATUS} from "@dropzone-ui/react";
 import {useFoodZone} from "foodzone-api-client";
 import {ProductCategory} from "foodzone-api-client/lib/models/ProductCategory";
 import {useAppSelector} from "../../../app/hooks";
 import {selectIsAuthenticated} from "../../../features/FoodZoneApi/foodZoneSlice";
-
-const columns = [
-  { field: 'name', headerName: 'Name' },
-  { field: 'productsCount', headerName: 'Total products', width: 110 },
-  { field: 'updatedAt', headerName: 'Updated At' },
-  { field: 'buttons',
-    headerName: '',
-    flex: 1,
-    renderCell: (params: GridRenderCellParams<any>) => (
-      <Box sx={{display: 'flex', alignItems: 'end'}}>
-        <IconButton aria-label="edit" color="warning">
-          <EditIcon />
-        </IconButton>
-        <IconButton aria-label="delete" color="error">
-          <DeleteIcon />
-        </IconButton>
-        {JSON.stringify(params.id)}
-      </Box>
-    ),},
-];
+import {CreateProductCategoryModal} from "../../../components/modals/CreateProductCategoryModal";
+import {set} from "immer/dist/utils/common";
+import moment from "moment";
+import searchNotFoundAnimationData from "../../../public/lotties/empty-box.json";
+import Lottie from "lottie-react";
 
 export default function SellerCmsCategoriesPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [files, setFiles] = useState<FileValidated[]>([]);
-  const [uploadProgess, setUploadProgress] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<ProductCategory[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const updateFiles = (incommingFiles) => {
-    setFiles(incommingFiles);
-  };
+
   const foodZone = useFoodZone();
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
   useEffect(() => {
     if (!isAuthenticated) return;
 
-    foodZone.getCategories().then(res => {
-      console.log(res);
+    foodZone.getProductCategories().then(res => {
       setData(res.categories);
+      setIsLoading(false);
     });
   }, [isAuthenticated]);
 
-  function onFormSubmit(e) {
-    e.preventDefault();
+  const columns = [
+    { field: 'name', headerName: 'Name' },
+    { field: 'productsCount', headerName: 'Total products', width: 110 },
+    { field: 'updatedAt',
+      headerName: 'Updated At',
+      valueFormatter: (params) => {
+        if (params.value == null) {
+          return '';
+        }
 
+        return moment(params.value).format('lll');
+      },
+      minWidth: 160,
+    },
+    { field: 'buttons',
+      headerName: '',
+      flex: 1,
+      renderCell: (params: GridRenderCellParams<ProductCategory>) => (
+        <Box sx={{display: 'flex', alignItems: 'end'}}>
+          <IconButton aria-label="edit" color="warning">
+            <EditIcon />
+          </IconButton>
+          <IconButton aria-label="delete" color="error" onClick={() => deleteCategory(params.id.toString())}>
+            <DeleteIcon />
+          </IconButton>
+        </Box>
+      ),},
+  ];
+
+  function deleteCategory(id: string) {
     setIsLoading(true);
-    let file = files[0];
-    file.uploadStatus = UPLOADSTATUS.uploading;
-    setFiles([file]);
 
-    foodZone.createProductCategory("test", files[0].file, {onProgress: onSubmitProgressUpdate})
-      .then(res => {
+    foodZone.deleteProductCategory(id).then(success => {
+      if (!success) {
         setIsLoading(false);
-        setUploadProgress(0);
-        setIsAddModalOpen(false);
-        setFiles([]);
-      })
-      .catch(reason => {
-        setIsLoading(false);
-      });
+        return;
+      }
+
+      // remove deleted category
+      setData(data.filter(function(category) {
+          return category.id !== id;
+        }));
+
+      setIsLoading(false);
+    });
   }
 
-  function onSubmitProgressUpdate(progress: number) {
-    setUploadProgress(progress);
-  }
-
-  function closeModal() {
-    if (isLoading) return;
-    setIsAddModalOpen(false);
+  function onCategoryCreated(category) {
+    setData([...data, category]);
   }
 
   return (
@@ -111,41 +113,26 @@ export default function SellerCmsCategoriesPage() {
               rowsPerPageOptions={[5]}
               checkboxSelection
               disableSelectionOnClick
+              loading={isLoading}
+              components={{
+                NoRowsOverlay: CustomNoRowsOverlay
+              }}
             />
           </div>
         </Box>
-        <Dialog open={isAddModalOpen} onClose={closeModal}>
-          {isLoading && <LinearProgress variant="determinate" value={uploadProgess} />}
-          <DialogTitle>Add new category</DialogTitle>
-          <form onSubmit={onFormSubmit}>
-            <DialogContent>
-              <DialogContentText>
-                You can group offered products into categories. Create a new category below.
-              </DialogContentText>
-              <Stack spacing={1} mt={2}>
-                <TextField
-                  autoFocus
-                  id="name"
-                  label="Name"
-                  fullWidth
-                  size="small"
-                  disabled={isLoading}
-                />
-                <Dropzone onChange={updateFiles} value={files} accept="image/*" maxFiles={1} minHeight={"100px"} behaviour="replace"
-                          label={"Drop Files here or click to browse"}>
-                  {files.map((file) => (
-                    <FileItem key={file.id} {...file} preview />
-                  ))}
-                </Dropzone>
-              </Stack>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={closeModal} disabled={isLoading}>Cancel</Button>
-              <Button type="submit" disabled={isLoading}>Create</Button>
-            </DialogActions>
-          </form>
-        </Dialog>
+        <CreateProductCategoryModal isOpen={isAddModalOpen} setIsOpen={setIsAddModalOpen} onCreated={onCategoryCreated} />
       </Container>
     </SellerLayout>
   )
+}
+
+function CustomNoRowsOverlay() {
+  return (
+    <Box sx={{display: "flex", flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%',}}>
+      <Box sx={{maxWidth: "200px"}}>
+        <Lottie animationData={searchNotFoundAnimationData} loop={false} />
+      </Box>
+      <Box sx={{ mt: 1 }}>No Items</Box>
+    </Box>
+  );
 }

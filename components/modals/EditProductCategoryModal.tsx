@@ -11,9 +11,9 @@ import {
 import LinearProgress from '@mui/material/LinearProgress';
 import {useState} from "react";
 import {Dropzone, FileItem, FileValidated, UPLOADSTATUS} from "@dropzone-ui/react";
-import {useFoodZone} from "foodzone-api-client";
+import {useFoodZone, ProductCategory} from "foodzone-api-client";
 
-export function CreateProductCategoryModal({setIsOpen, isOpen, onCreated}) {
+export function EditProductCategoryModal({setIsOpen, isOpen, category}: EditProductCategoryModalProps) {
   const [files, setFiles] = useState<FileValidated[]>([]);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +35,6 @@ export function CreateProductCategoryModal({setIsOpen, isOpen, onCreated}) {
       .then(res => {
         setIsLoading(false);
         setUploadProgress(0);
-        onCreated(res);
         setIsOpen(false);
         setFiles([]);
       })
@@ -56,11 +55,11 @@ export function CreateProductCategoryModal({setIsOpen, isOpen, onCreated}) {
   return (
     <Dialog open={isOpen} onClose={closeModal}>
       {isLoading && <LinearProgress variant="determinate" value={uploadProgress} />}
-      <DialogTitle>Add new category</DialogTitle>
+      <DialogTitle>Edit category</DialogTitle>
       <form onSubmit={onFormSubmit}>
         <DialogContent>
           <DialogContentText>
-            You can group offered products into categories. Create a new category below.
+            You can group offered products into categories. Edit the selected category below.
           </DialogContentText>
           <Stack spacing={1} mt={2}>
             <TextField
@@ -86,4 +85,10 @@ export function CreateProductCategoryModal({setIsOpen, isOpen, onCreated}) {
       </form>
     </Dialog>
   )
+}
+
+interface EditProductCategoryModalProps {
+  setIsOpen: any,
+  isOpen: boolean,
+  category: ProductCategory
 }

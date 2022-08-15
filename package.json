@@ -22,6 +22,8 @@
     "axios": "^0.27.2",
     "foodzone-api-client": "file:../FoodZone-API-Client",
     "geolib": "^3.3.3",
+    "lottie-react": "^2.3.1",
+    "moment": "^2.29.4",
     "next": "^12.2.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
