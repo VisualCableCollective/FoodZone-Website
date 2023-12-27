@@ -19,7 +19,7 @@
     "@mui/system": "^5.9.3",
     "@mui/x-data-grid": "^5.15.1",
     "@reduxjs/toolkit": "^1.8.3",
-    "axios": "^0.27.2",
+    "axios": "^1.6.3",
     "foodzone-api-client": "file:../FoodZone-API-Client",
     "geolib": "^3.3.3",
     "lottie-react": "^2.3.1",
