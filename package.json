@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@babel/core": "^7.0.0",
+    "@babel/core": "^7.23.2",
     "@dropzone-ui/react": "^6.7.5",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
@@ -19,7 +19,7 @@
     "@mui/system": "^5.9.3",
     "@mui/x-data-grid": "^5.15.1",
     "@reduxjs/toolkit": "^1.8.3",
-    "axios": "^0.27.2",
+    "axios": "^1.6.8",
     "foodzone-api-client": "file:../FoodZone-API-Client",
     "geolib": "^3.3.3",
     "lottie-react": "^2.3.1",
